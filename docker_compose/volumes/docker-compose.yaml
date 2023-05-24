@@ -1,0 +1,17 @@
+version: '3.4'
+services:
+  web:
+    image: nginx
+    volumes:
+      - ./html:/usr/share/nginx/html
+      - test:/usr/share/nginx/html/test
+    ports:
+      - "8080:80"
+  web-support:
+    image: nginx
+    restart: unless-stopped
+    volumes:
+      - ./html:/usr/share/nginx/html
+      - test:/app
+volumes:
+  test:

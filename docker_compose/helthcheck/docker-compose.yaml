@@ -1,0 +1,28 @@
+version: '3.4'
+services:
+  web:
+    image: nginx
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    healthcheck:
+      test: curl --fail http://localhost:80 || exit 1
+      interval: 6s
+      retries: 1
+      start_period: 20s
+      timeout: 5s
+  web-support:
+    image: nginx
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "9090:80"
+    depends_on:
+      web:
+        condition: service_healthy
+    
